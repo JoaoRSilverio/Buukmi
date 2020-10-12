@@ -1,26 +1,21 @@
 package controllers;
 
 import Repos.RoleRepo;
-import Services.IRegistrationService;
+import Repos.RoleRepoImpl;
 import Services.RegistrationService;
-import akka.stream.impl.fusing.Log;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.ebeaninternal.server.type.ScalarTypeJsonMapPostgres;
 import models.BuukmiClient;
-import models.Dtos.LoginDto;
 import models.Dtos.RegisterDto;
 import models.Exceptions.ResourceException;
 import models.Responses.ApiResponseFailure;
 import models.Responses.ApiResponseSuccess;
 import models.Role;
-import models.User;
 import play.libs.Json;
 import play.mvc.*;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.*;
 import java.util.logging.Logger;
 
 /**
@@ -28,8 +23,8 @@ import java.util.logging.Logger;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    @Inject RegistrationService registrationService;
-    @Inject RoleRepo roleRepo;
+     @Inject RegistrationService registrationServiceImpl;
+     @Inject RoleRepo roleRepoImpl;
     /**
      * An action that renders an HTML page with a welcome message.
      * The configuration in the <code>routes</code> file means that
@@ -49,16 +44,16 @@ public class HomeController extends Controller {
     public Result registerAsClient(final Http.Request request) {
         final JsonNode json = request.body().asJson();
         final RegisterDto registrationRequest = Json.fromJson(json, RegisterDto.class);
-        final Role clientRole = roleRepo.getRoles().get(0);
+        final Role clientRole = roleRepoImpl.getRoles().get(0);
         final List<Role> listRole =  new ArrayList<Role>();
         listRole.add(clientRole);
-        final Long userID = registrationService.createNewUser(
+        final Long userID = registrationServiceImpl.createNewUser(
                 registrationRequest.phoneNr,
                 registrationRequest.password,
                 registrationRequest.email,
                 listRole);
         try {
-            final BuukmiClient clientProfile=  registrationService.addClientProfile(
+            final BuukmiClient clientProfile=  registrationServiceImpl.addClientProfile(
                     userID,
                     registrationRequest.firstName,
                     registrationRequest.lastName,

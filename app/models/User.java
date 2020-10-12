@@ -19,7 +19,6 @@ public class User extends Model {
     private String password;
 
     private String email;
-    @OneToMany
     private List<Role> roles;
     @OneToOne
     private BuukmiClient clientProfile;

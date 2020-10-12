@@ -9,6 +9,8 @@ scalaVersion := "2.13.3"
 
 libraryDependencies ++= Seq(guice, evolutions, javaJdbc)
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.12"
+// https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.3m"
 // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.11"
 libraryDependencies += "com.auth0" % "java-jwt" % "3.10.3"
