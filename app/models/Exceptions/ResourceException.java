@@ -2,6 +2,9 @@ package models.Exceptions;
 
 public class ResourceException extends Exception{
     public Long id;
+    public ResourceException(final String msg){
+        super(msg);
+    }
     public ResourceException(final String msg, Long id){
         super(msg);
         this.id = id;

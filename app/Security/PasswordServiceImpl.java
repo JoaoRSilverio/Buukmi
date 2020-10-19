@@ -2,22 +2,21 @@ package Security;
 
 import Repos.UserRepo;
 import models.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.inject.Inject;
 
 public class PasswordServiceImpl implements PasswordService {
-    private UserRepo userRepoImpl;
-    @Inject public PasswordServiceImpl(final UserRepo userRepoImpl){
-        this.userRepoImpl = userRepoImpl;
-    }
+
+
     @Override
     public String hashAndSalt(String password) {
-        return null;
+        String salt = BCrypt.gensalt(5);
+        return BCrypt.hashpw(password, salt);
     }
 
     @Override
-    public boolean isPwdValid(User user, String password) {
-
-        return false;
+    public boolean isPwdValid(String savedPassword, String password) {
+        return BCrypt.checkpw(password, savedPassword);
     }
 }

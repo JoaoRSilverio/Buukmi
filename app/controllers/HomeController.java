@@ -2,18 +2,23 @@ package controllers;
 
 import Repos.RoleRepo;
 import Repos.RoleRepoImpl;
+import Repos.UserRepo;
 import Services.RegistrationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.BuukmiClient;
+import models.Dtos.LoginDto;
+import models.Dtos.LoginResponseDto;
 import models.Dtos.RegisterDto;
 import models.Exceptions.ResourceException;
 import models.Responses.ApiResponseFailure;
 import models.Responses.ApiResponseSuccess;
 import models.Role;
+import models.User;
 import play.libs.Json;
 import play.mvc.*;
-
+import Security.*;
 import javax.inject.Inject;
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,7 +29,11 @@ import java.util.logging.Logger;
  */
 public class HomeController extends Controller {
      @Inject RegistrationService registrationServiceImpl;
+     @Inject PasswordService passwordService;
+     @Inject JWTAuthService jwtAuthService;
+     @Inject UserRepo userRepo;
      @Inject RoleRepo roleRepoImpl;
+
     /**
      * An action that renders an HTML page with a welcome message.
      * The configuration in the <code>routes</code> file means that
@@ -62,7 +71,23 @@ public class HomeController extends Controller {
         } catch (ResourceException e){
             return ok(new ApiResponseFailure("user does not exist","" ).toJson());
         }
+    }
 
-
+    public Result login(final Http.Request request){
+        final JsonNode json = request.body().asJson();
+        final LoginDto loginInfo = Json.fromJson(json, LoginDto.class);
+        try {
+            User user = userRepo.getUserByNr(loginInfo.phoneNr);
+            if(passwordService.isPwdValid(user.getPassword(), loginInfo.password)){
+                String refreshToken = jwtAuthService.getRefreshToken(user);
+                LoginResponseDto loginResponseDto = new LoginResponseDto();
+                loginResponseDto.setRefreshToken(refreshToken);
+                loginResponseDto.setToken(jwtAuthService.getNewSessionToken(user, refreshToken));
+                return ok(new ApiResponseSuccess<LoginResponseDto>(loginResponseDto).toJson());
+            };
+            return ok(new ApiResponseFailure("invalid password","" ).toJson());
+        }catch (ResourceException exception){
+            return ok(new ApiResponseFailure("user does not exist","" ).toJson());
+        }
     }
 }

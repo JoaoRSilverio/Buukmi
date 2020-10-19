@@ -2,6 +2,7 @@ package Services;
 
 import Repos.UserRepo;
 import Repos.UserRepoImpl;
+import Security.PasswordService;
 import models.BuukmiClient;
 import models.Exceptions.ResourceException;
 import models.Professional;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepo userRepoImpl;
+    @Inject private PasswordService passwordService;
 
     @Inject
     public RegistrationServiceImpl(final UserRepo userRepoImpl){
@@ -22,7 +24,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     public Long createNewUser(String phoneNr, String password, String email, List<Role> roles) {
         User unsavedUser = new User();
         unsavedUser.setPhoneNr(phoneNr);
-        unsavedUser.setPassword(password);
+        unsavedUser.setPassword(passwordService.hashAndSalt(password));
         unsavedUser.setEmail(email);
         unsavedUser.setRoles(roles);
         return userRepoImpl.save(unsavedUser);

@@ -13,7 +13,14 @@ public class UserRepoImpl implements UserRepo {
     if(user == null) throw new ResourceException("no such user", user.getId());
     return user;
 }
-
+public User getUserByNr(String phoneNr) throws  ResourceException {
+        try {
+            User user = Ebean.find(User.class).where().eq("user.phoneNr", phoneNr).findOne();
+            return user;
+        } catch (Exception exception){
+            throw new ResourceException("no such user");
+        }
+}
 public User getUserById(Long id) throws  ResourceException{
     User user = Ebean.find(User.class, id);
     if(user == null) throw new ResourceException("no such user", id);

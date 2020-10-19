@@ -24,14 +24,21 @@ public class GeneralAuthentication {
     public @interface Authenticated {
         Class<? extends Security.Authenticator> value() default Security.Authenticator.class;
         Class<? extends Security.Authenticator>[] values() default {};
+
     }
 
     public static class AuthenticatedAction extends Action<Authenticated>{
        // @Inject private User
-
+        private Security.Authenticator authenticator;
+        public AuthenticatedAction(Security.Authenticator auth){
+            this.authenticator = auth;
+        }
         @Override
         public CompletionStage<Result> call(Http.Request req) {
-            return null;
+
+            return delegate.call(req);
+
         }
+
     }
 }

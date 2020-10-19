@@ -1,5 +1,7 @@
 package modules;
 
+import Security.JWTAuthService;
+import Security.JWTAuthServiceImpl;
 import Security.PasswordService;
 import Security.PasswordServiceImpl;
 import Services.RegistrationService;
@@ -11,5 +13,6 @@ public class ServicesModule extends AbstractModule {
     protected void configure() {
        bind(RegistrationService.class).to(RegistrationServiceImpl.class);
        bind(PasswordService.class).to(PasswordServiceImpl.class);
+       bind(JWTAuthService.class).to(JWTAuthServiceImpl.class);
     }
 }
