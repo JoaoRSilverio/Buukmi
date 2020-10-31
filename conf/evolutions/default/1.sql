@@ -1,5 +1,4 @@
-# --- Created by Ebean DDL
-# To stop Ebean DDL generation, remove this comment and start using Evolutions
+
 
 # --- !Ups
 
@@ -37,7 +36,7 @@ create table role (
   constraint pk_role primary key (id)
 );
 
-create table user (
+create table "user" (
   id                            bigserial not null,
   phone_nr                      varchar(255),
   password                      varchar(255),
@@ -49,9 +48,12 @@ create table user (
   constraint pk_user primary key (id)
 );
 
-alter table user add constraint fk_user_client_profile_id foreign key (client_profile_id) references buukmi_client (id) on delete restrict on update restrict;
+ alter table "user" add constraint fk_user_client_profile_id foreign key (client_profile_id) references buukmi_client (id) on delete restrict on update restrict;
 
-alter table user add constraint fk_user_professional_profile_id foreign key (professional_profile_id) references professional (id) on delete restrict on update restrict;
+ alter table "user" add constraint fk_user_professional_profile_id foreign key (professional_profile_id) references professional (id) on delete restrict on update restrict;
+
+ insert into buukmi_client(id, first_name, last_name, username) values ( 0,'dude','lastname','usernamedude');
+ insert into "user"(id, phone_nr, password, email, client_profile_id, professional_profile_id) values (0,'124234324','fsfdsdfsfd','234234234s',0,null);
 
 
 # --- !Downs
