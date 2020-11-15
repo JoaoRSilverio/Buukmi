@@ -1,11 +1,11 @@
 package Repos;
 
 import models.Exceptions.ResourceException;
-import models.User;
+import models.BuukmiUser;
 
 public interface UserRepo {
-    public User getUserByNr(String phoneNr) throws  ResourceException;
-    public User getUserByEmail(String email) throws ResourceException;
-    public User getUserById(Long id) throws  ResourceException;
-    public Long save(User user);
+    public BuukmiUser getUserByNr(String phoneNr) throws  ResourceException;
+    public BuukmiUser getUserByEmail(String email) throws ResourceException;
+    public BuukmiUser getUserById(Long id) throws  ResourceException;
+    public Long save(BuukmiUser buukmiUser);
     }

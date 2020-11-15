@@ -56,3 +56,7 @@ conf/messages*
 /conf/local_dev.conf
 /conf/local_test.conf
 **/*.iml
+
+# React
+
+/ui/node_modules

@@ -1,10 +1,6 @@
 package Security;
 
-import Repos.UserRepo;
-import models.User;
 import org.mindrot.jbcrypt.BCrypt;
-
-import javax.inject.Inject;
 
 public class PasswordServiceImpl implements PasswordService {
 

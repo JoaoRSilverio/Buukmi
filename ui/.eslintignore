@@ -1,0 +1,5 @@
+node_modules
+project
+target
+webpack*.config.js
+.eslintrc.js

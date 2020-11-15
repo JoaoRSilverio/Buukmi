@@ -8,8 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.typesafe.config.Config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import models.Exceptions.ResourceException;
-import models.User;
+import models.BuukmiUser;
 
 import javax.inject.Inject;
 import java.time.Duration;
@@ -29,30 +28,30 @@ public class JWTAuthServiceImpl implements  JWTAuthService{
         return decodedJWT;
     }
 
-    protected String createToken(User user, Date expiresAt){
+    protected String createToken(BuukmiUser buukmiUser, Date expiresAt){
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         String token = Jwts.builder()
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setIssuer("www.buukmi.com")
                 .setAudience("www.buukmi.com")
                 .setExpiration(expiresAt)
-                .claim("username",user.getClientProfile().getUsername())
-                .setSubject(user.getPhoneNr())
+                .claim("username", buukmiUser.getClientProfile().getUsername())
+                .setSubject(buukmiUser.getPhoneNr())
                 .signWith(signatureAlgorithm,config.getString("static.app.jwtSecret"))
                 .compact();
         return token;
     }
-    public String getRefreshToken(User user) {
+    public String getRefreshToken(BuukmiUser buukmiUser) {
         Date in20Days = Date.from(new Date(System.currentTimeMillis()).toInstant().plus(Duration.ofDays(20)));
-        return createToken(user, in20Days);
+        return createToken(buukmiUser, in20Days);
     }
-    public String getNewSessionToken(User user, String refreshToken) throws JWTVerificationException {
+    public String getNewSessionToken(BuukmiUser buukmiUser, String refreshToken) throws JWTVerificationException {
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(config.getString("static.app.jwtSecret")))
                 .withIssuer("www.buukmi.com")
                 .build();
         DecodedJWT decodedJWT = jwtVerifier.verify(refreshToken);
         Instant exp = decodedJWT.getExpiresAt().toInstant();
         Date in1Hour = Date.from(new Date(System.currentTimeMillis()).toInstant().plus(Duration.ofHours(1)));
-        return createToken(user,in1Hour);
+        return createToken(buukmiUser,in1Hour);
     }
 }

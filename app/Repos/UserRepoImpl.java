@@ -1,41 +1,37 @@
 package Repos;
 
 import io.ebean.Ebean;
-import io.ebean.ExpressionList;
+import models.BuukmiUser;
 import models.Exceptions.ResourceException;
-import models.User;
-
-import java.util.UUID;
 
 public class UserRepoImpl implements UserRepo {
-    public User getUserByEmail(String email) throws ResourceException{
-    User user = Ebean.find(User.class).where().eq("user.email", email).findOne();
-    if(user == null) throw new ResourceException("no such user", user.getId());
-    return user;
+    public BuukmiUser getUserByEmail(String email) throws ResourceException{
+    BuukmiUser buukmiUser = Ebean.find(BuukmiUser.class).where().eq("user.email", email).findOne();
+    if(buukmiUser == null) throw new ResourceException("no such user", buukmiUser.getId());
+    return buukmiUser;
 }
-public User getUserByNr(String phoneNr) throws  ResourceException {
+public BuukmiUser getUserByNr(String phoneNr) throws  ResourceException {
         try {
-            User user = Ebean.find(User.class).where().eq("user.phoneNr", phoneNr).findOne();
-            return user;
+            BuukmiUser buukmiUser = Ebean.find(BuukmiUser.class).where().eq("user.phoneNr", phoneNr).findOne();
+            return buukmiUser;
         } catch (Exception exception){
             throw new ResourceException("no such user");
         }
 }
-public User getUserById(Long id) throws  ResourceException{
-    User user = Ebean.find(User.class, id);
-    if(user == null) throw new ResourceException("no such user", id);
-    return user;
+public BuukmiUser getUserById(Long id) throws  ResourceException{
+    BuukmiUser buukmiUser = Ebean.find(BuukmiUser.class, id);
+    if(buukmiUser == null) throw new ResourceException("no such user", id);
+    return buukmiUser;
 }
 
 
 
-public Long save(User user){
-    final User dbUser = Ebean.find(User.class, user.getId());
-    if(dbUser.getId() == null){
-       user.save();
+public Long save(BuukmiUser buukmiUser){
+    if(buukmiUser.getId() == null){
+        buukmiUser.save();
     } else {
-        user.update();
+        buukmiUser.update();
     }
-    return user.getId();
+    return buukmiUser.getId();
 }
 }

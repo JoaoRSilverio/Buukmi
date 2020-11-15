@@ -1,13 +1,12 @@
 package Services;
 
 import Repos.UserRepo;
-import Repos.UserRepoImpl;
 import Security.PasswordService;
 import models.BuukmiClient;
+import models.BuukmiUser;
 import models.Exceptions.ResourceException;
 import models.Professional;
 import models.Role;
-import models.User;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -22,12 +21,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
     @Override
     public Long createNewUser(String phoneNr, String password, String email, List<Role> roles) {
-        User unsavedUser = new User();
-        unsavedUser.setPhoneNr(phoneNr);
-        unsavedUser.setPassword(passwordService.hashAndSalt(password));
-        unsavedUser.setEmail(email);
-        unsavedUser.setRoles(roles);
-        return userRepoImpl.save(unsavedUser);
+        BuukmiUser unsavedBuukmiUser = new BuukmiUser();
+        unsavedBuukmiUser.setPhoneNr(phoneNr);
+        unsavedBuukmiUser.setPassword(passwordService.hashAndSalt(password));
+        unsavedBuukmiUser.setEmail(email);
+        unsavedBuukmiUser.setRoles(roles);
+        return userRepoImpl.save(unsavedBuukmiUser);
          }
 
     @Override
@@ -38,10 +37,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         clientProfile.setUsername(username);
 
         try {
-            User targetUser = userRepoImpl.getUserById(userId);
-            targetUser.setClientProfile(clientProfile);
-            userRepoImpl.save(targetUser);
-            return targetUser.getClientProfile();
+            BuukmiUser targetBuukmiUser = userRepoImpl.getUserById(userId);
+            targetBuukmiUser.setClientProfile(clientProfile);
+            userRepoImpl.save(targetBuukmiUser);
+            return targetBuukmiUser.getClientProfile();
 
         }catch (ResourceException e){
             return null;
@@ -56,10 +55,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         professionalProfile.setLastName(lastname);
 
         try {
-            User targetUser = userRepoImpl.getUserById(id);
-            targetUser.setProfessionalProfile(professionalProfile);
-            userRepoImpl.save(targetUser);
-            return targetUser.getProfessionalProfile();
+            BuukmiUser targetBuukmiUser = userRepoImpl.getUserById(id);
+            targetBuukmiUser.setProfessionalProfile(professionalProfile);
+            userRepoImpl.save(targetBuukmiUser);
+            return targetBuukmiUser.getProfessionalProfile();
         } catch (ResourceException e){
             return null;
         }

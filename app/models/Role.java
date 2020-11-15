@@ -19,7 +19,7 @@ public class Role extends Model {
     private Long id;
     private String name;
     private Instant createdAt;
-    private UUID createdBy;
+    private Long createdBy;
 
 public static final Finder<Long, Role> find = new Finder<>(Role.class);
 }

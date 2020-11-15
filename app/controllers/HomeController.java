@@ -1,11 +1,12 @@
 package controllers;
 
 import Repos.RoleRepo;
-import Repos.RoleRepoImpl;
 import Repos.UserRepo;
 import Services.RegistrationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.BuukmiClient;
+import models.BuukmiUser;
+import models.Dtos.ClientProfileDto;
 import models.Dtos.LoginDto;
 import models.Dtos.LoginResponseDto;
 import models.Dtos.RegisterDto;
@@ -13,12 +14,10 @@ import models.Exceptions.ResourceException;
 import models.Responses.ApiResponseFailure;
 import models.Responses.ApiResponseSuccess;
 import models.Role;
-import models.User;
 import play.libs.Json;
 import play.mvc.*;
 import Security.*;
 import javax.inject.Inject;
-import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -67,7 +66,7 @@ public class HomeController extends Controller {
                     registrationRequest.firstName,
                     registrationRequest.lastName,
                     registrationRequest.username);
-            return ok(new ApiResponseSuccess<>(clientProfile).toJson());
+            return ok(new ApiResponseSuccess<>(new ClientProfileDto(clientProfile)).toJson());
         } catch (ResourceException e){
             return ok(new ApiResponseFailure("user does not exist","" ).toJson());
         }
@@ -77,12 +76,12 @@ public class HomeController extends Controller {
         final JsonNode json = request.body().asJson();
         final LoginDto loginInfo = Json.fromJson(json, LoginDto.class);
         try {
-            User user = userRepo.getUserByNr(loginInfo.phoneNr);
-            if(passwordService.isPwdValid(user.getPassword(), loginInfo.password)){
-                String refreshToken = jwtAuthService.getRefreshToken(user);
+            BuukmiUser buukmiUser = userRepo.getUserByNr(loginInfo.phoneNr);
+            if(passwordService.isPwdValid(buukmiUser.getPassword(), loginInfo.password)){
+                String refreshToken = jwtAuthService.getRefreshToken(buukmiUser);
                 LoginResponseDto loginResponseDto = new LoginResponseDto();
                 loginResponseDto.setRefreshToken(refreshToken);
-                loginResponseDto.setToken(jwtAuthService.getNewSessionToken(user, refreshToken));
+                loginResponseDto.setToken(jwtAuthService.getNewSessionToken(buukmiUser, refreshToken));
                 return ok(new ApiResponseSuccess<LoginResponseDto>(loginResponseDto).toJson());
             };
             return ok(new ApiResponseFailure("invalid password","" ).toJson());
