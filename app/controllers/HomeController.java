@@ -48,7 +48,10 @@ public class HomeController extends Controller {
 
         return ok();
     }
-
+    @Security.GeneralAuthentication.Authenticated(JSONAuthenticator.class)
+    public Result dashboard(final Http.Request request) {
+        return ok("success");
+    }
     public Result registerAsClient(final Http.Request request) {
         final JsonNode json = request.body().asJson();
         final RegisterDto registrationRequest = Json.fromJson(json, RegisterDto.class);
@@ -80,9 +83,10 @@ public class HomeController extends Controller {
             if(passwordService.isPwdValid(buukmiUser.getPassword(), loginInfo.password)){
                 String refreshToken = jwtAuthService.getRefreshToken(buukmiUser);
                 LoginResponseDto loginResponseDto = new LoginResponseDto();
+                loginResponseDto.setProfile(new ClientProfileDto(buukmiUser.getClientProfile()));
                 loginResponseDto.setRefreshToken(refreshToken);
                 loginResponseDto.setToken(jwtAuthService.getNewSessionToken(buukmiUser, refreshToken));
-                return ok(new ApiResponseSuccess<LoginResponseDto>(loginResponseDto).toJson());
+                return ok(Json.toJson(loginResponseDto));
             };
             return ok(new ApiResponseFailure("invalid password","" ).toJson());
         }catch (ResourceException exception){

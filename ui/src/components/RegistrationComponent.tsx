@@ -11,9 +11,10 @@ import {
     HStack,
     Button,
     FormHelperText, Divider} from "@chakra-ui/react";
+import {doRegister} from "../actions/ActionCreators"
 import axios from "axios";
-import RestService from "../services/RestService";
 import {IRegistrationResponse} from "../interfaces/dtos";
+import IAppState from "../interfaces/state/AppState";
 
 interface IRegistrationComponentState {
     name: string;
@@ -120,8 +121,7 @@ export default class RegistrationComponent extends React.Component<any, IRegistr
     }
     async submit(){
         console.log("btn pressed");
-        const response:IRegistrationResponse = await RestService.register(axios, {...this.state});
-        console.log("success", response);
+        doRegister(this.state)
     }
     handleInput(text: string, field: FIELDS){
         switch (field){

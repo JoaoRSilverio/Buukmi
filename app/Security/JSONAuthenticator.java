@@ -3,6 +3,7 @@ package Security;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.typesafe.config.Config;
+import io.jsonwebtoken.Claims;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -18,8 +19,8 @@ public class JSONAuthenticator extends Security.Authenticator {
     public Optional<String> getUsername(Http.Request req) {
         try {
             Optional<String> token = req.header("Authorization");
-            DecodedJWT decodedJWT = jwtAuthService.verifyToken(token.get());
-            Optional<String> email = Optional.ofNullable(decodedJWT.getHeaderClaim("email").asString());
+            Claims decodedJWT = jwtAuthService.verifyToken(token.get());
+            Optional<String> email = Optional.ofNullable(decodedJWT.get("email").toString());
             return email;
         }catch (JWTVerificationException exception){
             return Optional.empty();

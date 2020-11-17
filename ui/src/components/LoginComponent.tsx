@@ -8,10 +8,11 @@ import {
     InputGroup,
     InputLeftAddon,
     VStack,
-    HStack,
     Button,
     FormHelperText, Divider} from "@chakra-ui/react";
-import axios from "axios";
+import {doLogin} from "../actions/ActionCreators";
+import {connect} from "react-redux";
+import {ILoginData} from "../actions/ActionInterfaces";
 enum FIELDS {
     PASSWORD = "password",
     PHONE_NUMBER = "phoneNr",
@@ -25,8 +26,10 @@ interface LoginComponentState {
     phoneNr: string;
     password: string
 }
-
-export default class LoginComponent extends React.Component<any, LoginComponentState>{
+export interface ILoginComponentProps {
+   doLogin:(loginData:ILoginData)=> void;
+}
+class LoginComponent extends React.Component<ILoginComponentProps, LoginComponentState>{
     constructor(props:any) {
         super(props);
         this.state = {
@@ -65,8 +68,9 @@ export default class LoginComponent extends React.Component<any, LoginComponentS
                 </InputGroup>
                 <FormHelperText>please insert your password</FormHelperText>
             </FormControl>
+                <Button onClick={ () =>this.submit()} >Login</Button>
             </VStack>
-            <Button onClick={ () =>this.submit()} >Login</Button>
+
         </Box>)
     }
     handleInput(text: string, field: FIELDS){
@@ -88,6 +92,12 @@ export default class LoginComponent extends React.Component<any, LoginComponentS
 
     }
     submit(){
-        //
+        const {phoneNr, password} = this.state;
+        this.props.doLogin({phoneNr,password});
     }
 }
+const mapDispatchToProps = { doLogin }
+export default connect(
+    undefined,
+    mapDispatchToProps
+)(LoginComponent);

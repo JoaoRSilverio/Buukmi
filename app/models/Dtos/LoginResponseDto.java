@@ -10,4 +10,5 @@ import lombok.Setter;
 public class LoginResponseDto {
     private String refreshToken;
     private String token;
+    private ClientProfileDto profile;
 }
