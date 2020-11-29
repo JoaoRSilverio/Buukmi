@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import Security.GeneralAuthentication;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -48,7 +49,6 @@ public class HomeController extends Controller {
 
         return ok();
     }
-    @Security.GeneralAuthentication.Authenticated(JSONAuthenticator.class)
     public Result dashboard(final Http.Request request) {
         return ok("success");
     }
