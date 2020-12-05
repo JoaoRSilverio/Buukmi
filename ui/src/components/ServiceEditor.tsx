@@ -10,10 +10,12 @@ import {IService, IServicePreConditionRequirement} from "../interfaces/interface
 import React from "react";
 import {Currencies, Money} from "ts-money";
 import Page from "./Page";
-import {hairCutPreConditionRequirement, pcHairLenght} from "../TestData";
+import {haircutFeatures, hairCutPreConditionRequirement, pcHairLenght} from "../TestData";
 const createNewService = ():IService => {
     console.log("ran");
     return {
+        serviceTemplates:[],
+        id:"00",
         basePrice: new Money(0,Currencies.EUR),
         discountRateInPercentile:0,
         durationInS:0,
@@ -23,7 +25,7 @@ const createNewService = ():IService => {
         possibleRequests:[],
         preConditions:[hairCutPreConditionRequirement],
         optionalFeatures:[],
-        includedFeatures:[]
+        includedFeatures:[[haircutFeatures[0]]]
     }
 }
 
@@ -42,6 +44,7 @@ export  const ServiceEditor:React.FC<IEntityEditorForType<IService>> = (props) =
                 onAddRequirement={()=>{}}
                 entity={activeEntity}
                 onEntityUpdated={updateActiveEntity} />
+
         </EntityEditor>
 </Page>
     )

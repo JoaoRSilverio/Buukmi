@@ -5,12 +5,16 @@ export interface IUserProfile{
   firstName: string;
   lastName: string;
 }
-
+export interface IEntity{
+  id: string;
+}
 export interface UIOption {
   title: string;
   description: string;
   icon: string;
 }
+
+export interface UIEntity extends IEntity,UIOption {};
 export interface TemporalEntity {
   durationInS: number;
 }
@@ -21,32 +25,28 @@ export interface Priceable {
   basePrice: TSMoney.Money;
   discountRateInPercentile: number,
 }
-export interface IServicePreConditionValue extends UIOption{
-  id: string;
+export interface IServicePreConditionValue extends UIEntity{
+
 }
 
-export interface IServicePreConditionType extends UIOption{
-  id: string;
+export interface IServicePreConditionType extends UIEntity{
   availableValues: IServicePreConditionValue[];
 }
 
-export interface IServicePreConditionRequirement {
-  id: string;
+export interface IServicePreConditionRequirement extends IEntity{
   preCondition: IServicePreConditionType;
   acceptedValues: IServicePreConditionValue[];
   defaultValue: IServicePreConditionValue;
 }
 
-export interface IServiceTechnicalRequest extends UIOption, TemporalEntity,Priceable{
-  id: string;
+export interface IServiceTechnicalRequest extends UIEntity, TemporalEntity,Priceable{
 }
 
-export interface IServiceFeatureOption extends UIOption,TemporalEntity,Priceable{
+export interface IServiceFeatureOption extends UIEntity,TemporalEntity,Priceable{
 
 }
 
-export interface IServiceFeature extends  UIOption,TemporalEntity,Priceable{
-  id: string;
+export interface IServiceFeature extends  UIEntity,TemporalEntity,Priceable{
   icon: string;
   title: string;
   description: string;
@@ -66,8 +66,13 @@ export interface IServiceSpec {
   serviceRequests:IServiceTechnicalRequest[],
   serviceSelectedFeatures:IServiceFeatureSpec[],
 }
-
-export interface IService extends UIOption,TemporalEntity,Priceable{
+export interface IServiceTemplate extends UIEntity {
+  possibleRequests: IServiceTechnicalRequest[];
+  includedFeatures: IServiceFeature[][];// when a feature excludes the other they go in the same array
+  optionalFeatures: IServiceFeature[][];
+}
+export interface IService extends UIEntity,TemporalEntity,Priceable{
+  serviceTemplates:IServiceTemplate[];
   preConditions: IServicePreConditionRequirement[];
   possibleRequests: IServiceTechnicalRequest[];
   includedFeatures: IServiceFeature[][];// when a feature excludes the other they go in the same array

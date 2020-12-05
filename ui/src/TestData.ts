@@ -3,7 +3,7 @@ import {
     IService,
     IServiceFeature,
     IServiceFeatureOption, IServicePreConditionRequirement,
-    IServicePreConditionType, IServiceTechnicalRequest
+    IServicePreConditionType, IServiceTechnicalRequest, IServiceTemplate
 } from "./interfaces/interfaces";
 import {Currencies, Money} from "ts-money";
 
@@ -30,8 +30,9 @@ export const hairCutPreConditionRequirement: IServicePreConditionRequirement = {
     preCondition:pcHairLenght
 }
 
-const eyebrowFeatureOptions: IServiceFeatureOption [] = [
+export const eyebrowFeatureOptions: IServiceFeatureOption [] = [
     {
+        id:"00",
         durationInS:60,
         discountRateInPercentile:0,
         basePrice:new Money(10,Currencies.EUR),
@@ -40,6 +41,7 @@ const eyebrowFeatureOptions: IServiceFeatureOption [] = [
         title:"Unibrow Prevention"
     },
     {
+        id:"01",
         durationInS:60,
         discountRateInPercentile:0,
         basePrice:new Money(10,Currencies.EUR),
@@ -48,6 +50,7 @@ const eyebrowFeatureOptions: IServiceFeatureOption [] = [
         title:"Sharpen eyebrow"
     },
     {
+        id:"02",
         durationInS:60,
         discountRateInPercentile:0,
         basePrice:new Money(10,Currencies.EUR),
@@ -59,6 +62,7 @@ const eyebrowFeatureOptions: IServiceFeatureOption [] = [
 
 const eyebrowFeatureOptionsOptional: IServiceFeatureOption[] = [
     {
+        id:"00",
         durationInS:60,
         discountRateInPercentile:0,
         basePrice:new Money(10,Currencies.EUR),
@@ -71,6 +75,7 @@ const eyebrowFeatureOptionsOptional: IServiceFeatureOption[] = [
 
 const frontHairlineFeatureOptions: IServiceFeatureOption[] = [
     {
+        id:"00",
         durationInS:60,
         discountRateInPercentile:0,
         basePrice:new Money(10,Currencies.EUR),
@@ -79,6 +84,7 @@ const frontHairlineFeatureOptions: IServiceFeatureOption[] = [
         title:"Straight"
     },
     {
+        id:"01",
         durationInS:60,
         discountRateInPercentile:0,
         basePrice:new Money(10,Currencies.EUR),
@@ -88,7 +94,7 @@ const frontHairlineFeatureOptions: IServiceFeatureOption[] = [
     }
 ]
 
-const haircutFeatures:IServiceFeature[] = [
+export const haircutFeatures:IServiceFeature[] = [
     {
         title:"Eyebrows",
         description:"Contouring of the eyebrows",
@@ -124,8 +130,40 @@ const scissorOnlyRequest:IServiceTechnicalRequest = {
     icon:undefined,
     id:"00"
 }
+const noConditioner:IServiceTechnicalRequest = {
+    id:"01",
+    durationInS:0,
+    basePrice: new Money(0, Currencies.EUR),
+    title:"No Conditioner",
+    description:"dont use conditioner",
+    icon:undefined,
+    discountRateInPercentile:0
+}
 
+const HaircutTemplate: IServiceTemplate = {
+    id:"00",
+    title:"HairCut",
+    description:"",
+    icon:undefined,
+    includedFeatures:[[haircutFeatures[0]],[haircutFeatures[1]]],
+    optionalFeatures:[],
+    possibleRequests:[scissorOnlyRequest]
+
+}
+
+const WashingTemplate: IServiceTemplate = {
+    id:"01",
+    title:"Washing",
+    description:"",
+    icon:undefined,
+    includedFeatures:[],
+    optionalFeatures:[],
+    possibleRequests:[noConditioner]
+}
+export const TEMPLATES = [HaircutTemplate,WashingTemplate];
 const serviceHairCutLevel1:IService = {
+    id:"00",
+    serviceTemplates:[HaircutTemplate],
     title:"General Haircut",
     description:"A standard haircut",
     icon:undefined,
