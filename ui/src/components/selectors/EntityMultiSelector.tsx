@@ -1,11 +1,12 @@
 import {IServiceTemplate, UIEntity} from "../../interfaces/interfaces";
-import {Box, Button, Heading, HStack, Image, VStack,Tooltip, Collapse} from "@chakra-ui/react";
 
 import React, {useState} from "react";
 import {MultiSelect, ItemRenderer, IItemRendererProps} from "@blueprintjs/select";
 import {MenuItem} from "@blueprintjs/core";
+import { Heading } from "@chakra-ui/react";
 
 export interface EntitySelectorProps {
+    title: string;
     entities:UIEntity[];
     onSelectionChange:(templates:UIEntity[])=> void;
     selection:UIEntity[];
@@ -16,9 +17,10 @@ function useTemplates(entities:UIEntity[] = []):[UIEntity[],(updatedTemplates:UI
     return [selectedEntities,setEntity];
 }
 
-const EntitySelector:React.FC<EntitySelectorProps> = (props) => {
+const EntityMultiSelector:React.FC<EntitySelectorProps> = (props) => {
     return(
-        <VStack>
+        <>
+            <Heading size={"sm"}>{props.title}</Heading>
         <TemplateMultiSelect
             selectedItems={props.selection}
             tagRenderer={renderTag}
@@ -28,7 +30,7 @@ const EntitySelector:React.FC<EntitySelectorProps> = (props) => {
             itemRenderer={
                 (entity:UIEntity,itemRendererProps:IItemRendererProps) =>
                 renderEntity(entity,props.selection,itemRendererProps)} />
-        </VStack>
+                </>
         )
 }
 const handleEntitySelect = (
@@ -60,4 +62,4 @@ const renderEntity:any = (entity:UIEntity, selection:UIEntity[],props:IItemRende
     )
 }
 
-export default EntitySelector;
+export default EntityMultiSelector;

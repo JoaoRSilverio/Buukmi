@@ -27,9 +27,6 @@ export class ProfileComponent extends React.Component<IProfileComponentProps, IP
     render(){
         const {profile} = this.props;
         return(
-            <Box p={8}>
-                <Heading>Profile</Heading>
-                <Divider />
             <VStack p={8} align={"left"}>
                 {profile && Object.keys(profile).map(
                     (infoLine:string) =>
@@ -40,7 +37,6 @@ export class ProfileComponent extends React.Component<IProfileComponentProps, IP
                             </Stat>
                         )}
             </VStack>
-            </Box>
         )
     }
 

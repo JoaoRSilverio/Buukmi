@@ -5,4 +5,10 @@ enum APP_ENDPOINTS {
     DEBUG = "http://127.0.0.1:9000",
 }
 
+export enum ROLES {
+    CLIENT = "client",
+    PROFESSIONAL = "professional",
+    ADMIN = "admin"
+}
+
 export const CURRENT_BACKEND = APP_ENDPOINTS.PRODUCTION;

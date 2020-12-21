@@ -52,9 +52,6 @@ export default class RegistrationComponent extends React.Component<any, IRegistr
     render(){
         const {name, password, username, phoneNr, email, firstName,lastName}= this.state;
         return(
-        <Box p={8} >
-            <Heading>Registration Page</Heading>
-            <Divider />
             <VStack w={340} p={8} spacing={8}>
             <FormControl  id="phoneNr">
                 <FormLabel>Phone Nr</FormLabel>
@@ -116,7 +113,6 @@ export default class RegistrationComponent extends React.Component<any, IRegistr
                 </FormControl>
             <Button onClick={ () =>this.submit()} >Register</Button>
             </VStack>
-        </Box>
         )
     }
     async submit(){

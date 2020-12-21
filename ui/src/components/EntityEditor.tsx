@@ -37,7 +37,7 @@ export interface IEntityEditorForType<T>{
     entity?: T;
 }
 
-export function useEditorEntity():[any,(entity:any)=>void] {
+export function useEditorEntity<T>():[T,(entity:T)=>void] {
     const [activeEntity,updateActiveEntity] = useState(null);
     return [activeEntity,updateActiveEntity];
 }

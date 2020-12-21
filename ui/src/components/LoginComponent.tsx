@@ -40,9 +40,7 @@ class LoginComponent extends React.Component<ILoginComponentProps, LoginComponen
 
     render(){
         const {phoneNr, password} = this.state
-        return (<Box p={8}>
-            <Heading>Login Page</Heading>
-            <Divider />
+        return (
             <VStack w={340} p={8} spacing={8}>
             <FormControl  id="phoneNr">
                 <FormLabel>Phone Nr</FormLabel>
@@ -71,7 +69,7 @@ class LoginComponent extends React.Component<ILoginComponentProps, LoginComponen
                 <Button onClick={ () =>this.submit()} >Login</Button>
             </VStack>
 
-        </Box>)
+        )
     }
     handleInput(text: string, field: FIELDS){
         switch (field){

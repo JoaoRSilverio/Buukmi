@@ -6,11 +6,12 @@ import EntityEditor, {
     TemporalEntityEditor,
     PriceEditor, IEntityEditorForType, RequirementEditor
 } from "./EntityEditor";
-import {IService, IServicePreConditionRequirement} from "../interfaces/interfaces";
+import {IService, IServicePreConditionRequirement, IServiceTemplate} from "../interfaces/interfaces";
 import React from "react";
 import {Currencies, Money} from "ts-money";
 import Page from "./Page";
-import {haircutFeatures, hairCutPreConditionRequirement, pcHairLenght} from "../TestData";
+import {haircutFeatures, hairCutPreConditionRequirement, pcHairLenght, TEMPLATES} from "../TestData";
+import EntityMultiSelector from "./selectors/EntityMultiSelector";
 const createNewService = ():IService => {
     console.log("ran");
     return {
@@ -31,9 +32,11 @@ const createNewService = ():IService => {
 
 
 export  const ServiceEditor:React.FC<IEntityEditorForType<IService>> = (props) => {
-    const [activeEntity,updateActiveEntity] = useEditorEntity();
+    const [activeEntity,updateActiveEntity] = useEditorEntity<IService>();
+    function updateTemplateSelection(selection:IServiceTemplate[]){
+        updateActiveEntity({...activeEntity,serviceTemplates:selection})
+    }
     return(
-<Page title={"Editors Page"}>
         <EntityEditor {...props}
                       onSaved={()=>props.onSaved(activeEntity)}
                       createNew={()=>updateActiveEntity(createNewService())} >
@@ -44,9 +47,13 @@ export  const ServiceEditor:React.FC<IEntityEditorForType<IService>> = (props) =
                 onAddRequirement={()=>{}}
                 entity={activeEntity}
                 onEntityUpdated={updateActiveEntity} />
-
+            { activeEntity && <EntityMultiSelector
+                title={"Service Template"}
+    entities={TEMPLATES}
+    onSelectionChange={
+        (updatedSelection)=> updateTemplateSelection(updatedSelection as IServiceTemplate[]) }
+    selection={activeEntity.serviceTemplates} />}
         </EntityEditor>
-</Page>
     )
 }
 

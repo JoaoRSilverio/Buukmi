@@ -40,7 +40,7 @@ public class HomeController extends Controller {
      * this method will be called when the application receives a
      * <code>GET</code> request with a path of <code>/</code>.
      */
-    public Result index() {
+    public Result index(String path) {
         Logger logger = Logger.getLogger("HomeController");
         logger.warning("something");
         return ok(views.html.index.render());
