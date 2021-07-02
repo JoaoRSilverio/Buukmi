@@ -58,7 +58,7 @@ module.exports = {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      eslint: true
+      eslint: undefined
     }) // ts-loader plus this is similar to awesome-typescript-loader just faster.
   ]
 };

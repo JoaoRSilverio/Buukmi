@@ -32,6 +32,6 @@ public class HomeControllerTest extends WithApplication {
     public void decodeToken(){
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(POST)
-                .uri("")
+                .uri("");
     }
 }

@@ -2,12 +2,27 @@
   "compilerOptions": {
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
     "allowSyntheticDefaultImports": true,
-    "jsx": "react",
-    "lib": ["es5", "dom", "es2015", "es2017", "es2018.promise"]
+    "jsx": "react-jsx",
+    "lib": [
+      "es5",
+      "dom",
+      "es2015",
+      "es2017",
+      "es2018.promise"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "exclude": [
     "node_modules"
@@ -15,5 +30,7 @@
   "include": [
     "./src/**/*"
   ],
-  "files": ["./src/App.tsx"]
+  "files": [
+    "./src/App.tsx"
+  ]
 }

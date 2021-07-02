@@ -8,7 +8,6 @@ import Page from "./Page";
 import { HStack, VStack } from "@chakra-ui/react";
 import { NavbarDivider, NavbarGroup, NavbarHeading, Navbar, Button, Tabs, Tab } from "@blueprintjs/core";
 import { Alignment } from "@blueprintjs/core/lib/esm/common/alignment";
-import UserPanel from "./panels/UserPanel";
 
 export interface IDashboardProps {
     profile: IUserProfile;
@@ -27,10 +26,10 @@ const Dashboard: React.FC<IDashboardProps> = props => {
                         <NavbarDivider />
                     </NavbarGroup>
                 </Navbar>
-                <Tabs selectedTabId={"ng"}>
-                    <Tab id="ng" title="Users" panel={<UserPanel />} />
-                    <Tab id="ap" title="Appointments" panel={<UserPanel />} />
-                    <Tab id="se" title="Services" panel={<UserPanel />} />
+                <Tabs defaultSelectedTabId={"ng"}>
+                    <Tab id="ng" title="Users" panel={<div>{"Users"}</div>} />
+                    <Tab id="ap" title="Appointments" panel={<div>{"Appointments"}</div>} />
+                    <Tab id="se" title="Services" panel={<div>{"Users"}</div>} />
                 </Tabs>
                 <ProfileComponent profile={props.profile} />
             </VStack>
